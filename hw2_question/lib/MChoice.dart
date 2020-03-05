@@ -1,53 +1,93 @@
-import 'Question.dart';
+import 'package:flutter/material.dart';
 
-///Type 1 questions : Multiple Choice questions
-class MChoice extends Question{
-  int answer;
-  var options;
+void main() => runApp(MyApp());
 
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text("Multiple Choice"),
+          ),
+          body: SafeArea(
+              child : Center(
 
-  MChoice(String question, int answer, var opt){
-    this.stem = question;
-    this.answer = answer;
-    this.options = opt;
+                child:RadioGroup(),
+
+              )
+          )
+      ),
+    );
   }
-///display questions of type 1
-  @override void dispQ() {
-    print('QUESTION : ' + stem);
-    ///1 for true and 2 for False
-    if(options.length == 2){
-      //print('OPTIONS: $options  [SELECT] 1 for true and 2 for false     [PREV] type p   [NEXT] type n');
-      print(" SELECT 1 for TRUE");
-      print(" SELECT 2 for FALSE");
-      print(" SELECT p to go to the PREVIOUS question");
-      print(" SELECT n to go to the NEXT question");
-    }
-    else if(options.length == 4){
-      //print('OPTIONS: $options          [SELECT] 1 for A, 2 for B, 3 for C, 4 for D     [PREV] type p   [NEXT] type n');
-      print(" SELECT 1 for " + options[0].toString());
-      print(" SELECT 2 for " + options[1].toString());
-      print(" SELECT 3 for " + options[2].toString());
-      print(" SELECT 4 for " + options[3].toString());
-      print(" SELECT p to go to the PREVIOUS question");
-      print(" SELECT n to go to the NEXT question");
-    }
-    else if(options.length == 5){
-      //print('OPTIONS: $options          [SELECT] 1 for A, 2 for B, 3 for C, 4 for D     [PREV] type p   [NEXT] type n');
-      print(" SELECT 1 for " + options[0].toString());
-      print(" SELECT 2 for " + options[1].toString());
-      print(" SELECT 3 for " + options[2].toString());
-      print(" SELECT 4 for " + options[3].toString());
-      print(" SELECT 5 for " + options[4].toString());
-      print(" SELECT p to go to the PREVIOUS question");
-      print(" SELECT n to go to the NEXT question");
-    }
+}
+
+class RadioGroup extends StatefulWidget {
+  @override
+  RadioGroupWidget createState() => RadioGroupWidget();
+}
+
+class OptionsList {
+  String name;
+  int index;
+  OptionsList({this.name, this.index});
+}
+
+class RadioGroupWidget extends State {
+
+  // Default Radio Button Item
+  String radioItem = 'Question: Multiple choice';
+
+  // Group Value for Radio Button.
+  int id = 0;
+
+  List<OptionsList> fList = [
+    OptionsList(
+      index: 1,
+      name: "Option 1",
+    ),
+    OptionsList(
+      index: 2,
+      name: "Option 2",
+    ),
+    OptionsList(
+      index: 3,
+      name: "Option 3",
+    ),
+    OptionsList(
+      index: 4,
+      name: "Option 4",
+    ),
+  ];
+
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Padding(
+            padding : EdgeInsets.all(14.0),
+            child: Text('$radioItem', style: TextStyle(fontSize: 23))
+        ),
+
+        Expanded(
+            child: Container(
+              height: 350.0,
+              child: Column(
+                children:
+                fList.map((data) => RadioListTile(
+                  title: Text("${data.name}"),
+                  groupValue: id,
+                  value: data.index,
+                  onChanged: (val) {
+                    setState(() {
+                      radioItem = data.name ;
+                      id = data.index;
+                    });
+                  },
+                )).toList(),
+              ),
+            )),
+
+      ],
+    );
   }
-
-  @override void dispAll() {
-    print('QUESTION: ' + stem);
-    print('OPTIONS: $options');
-    print('ANSWER: $answer');
-  }
-
-
 }
